@@ -224,11 +224,13 @@ let isRegisterMode = false;
 
 function openAuthModal(registerMode) {
     const authModal = document.getElementById('auth-modal');
-    isRegisterMode = registerMode;
-    document.getElementById('modal-title').innerText = register ? 'Join TechPulse' : 'Welcome Back';
-    document.getElementById('modal-subtitle').innerText = register ? 'Create your account to publish articles.' : 'Sign in with your username and password.';
-    document.getElementById('email-group').style.display = register ? 'block' : 'none';
-    document.getElementById('auth-submit-btn').innerText = register ? 'Create Account' : 'Sign In';
+    isRegisterMode = registerMode; // <-- এখানে registerMode হবে!
+    document.getElementById('modal-title').innerText = registerMode ? 'Join TechPulse' : 'Welcome Back';
+    document.getElementById('modal-subtitle').innerText = registerMode ? 'Create your account to publish articles.' : 'Sign in with your username and password.';
+    document.getElementById('email-group').style.display = registerMode ? 'block' : 'none';
+    document.getElementById('auth-submit-btn').innerText = registerMode ? 'Create Account' : 'Sign In';
+    document.getElementById('modal-toggle-text').innerText = registerMode ? 'Already a member?' : "Don't have an account?";
+    document.getElementById('modal-toggle-btn').innerText = registerMode ? 'Sign in' : 'Sign up now';
     document.getElementById('auth-error').style.display = 'none';
     authModal.style.display = 'flex';
 }
