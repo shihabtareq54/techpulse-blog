@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListCreateView, RegisterView, LoginView, LogoutView
+from .views import PostListCreateView, RegisterView, LoginView, LogoutView, PostDetailView
 
 urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='register'),
@@ -8,5 +8,5 @@ urlpatterns = [
 
     # ব্লগ পোস্টের রুট 
     path('posts/', PostListCreateView.as_view(), name='post-list-create'),
-    path('posts/<int:pk>/', PostListCreateView.as_view(), name='post-detail-update-delete'),
+    path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail-update-delete'),
 ]

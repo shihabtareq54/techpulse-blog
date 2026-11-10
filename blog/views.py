@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 from .serializers import UserRegisterSerializer, PostSerializer, CommentSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Post, Comment
+from .permissions import IsOwnerOrReadOnly
 
 
 class RegisterView(APIView):
@@ -78,14 +79,7 @@ class PostListCreateView(generics.ListCreateAPIView):
 # ==============================================================
 # ২. নির্দিষ্ট একটি পোস্টের বিস্তারিত ও কমেন্ট দেখা (GET)
 # ==============================================================
-class PostDetailView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-    def get(self, request, pk):
-        try:
-            post = Post.objects.get(pk=pk)
-        except Post.DoesNotExist:
-            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = PostSerializer(post)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly]
