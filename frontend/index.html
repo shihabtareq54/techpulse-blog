@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechPulse • Netflix TechBlog Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ১. প্রিমিয়াম হেডার -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand" id="brand-home-btn">
+                <span class="logo-mark">⚡</span>
+                <span class="brand-text">TECH<strong>PULSE</strong></span>
+                <span class="brand-tag">NETFLIX EDITION</span>
+            </div>
+
+            <div class="nav-actions" id="nav-actions"></div>
+        </div>
+    </header>
+
+    <!-- ২. হোমপেজ ভিউ (কার্ড গ্রিড) -->
+    <div id="home-view">
+        <section class="hero-section">
+            <div class="hero-content">
+                <span class="badge">TechPulse Engineering Stories</span>
+                <h1>Engineering insights, deep architecture & modern scale.</h1>
+                <p>Read technical posts directly written by backend engineers and distributed systems researchers.</p>
+            </div>
+        </section>
+
+        <main class="main-content">
+            <div class="section-title-wrap">
+                <h2>All Technical Publications</h2>
+                <div class="divider-line"></div>
+            </div>
+
+            <div id="posts-container" class="netflix-grid">
+                <!-- নেটফ্লিক্স স্টাইল কার্ড এখানে লোড হবে -->
+                <div class="loading-state">Loading stories...</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ৩. আর্টিকেল ডিটেইল ভিউ (পুরো আর্টিকেল পড়ার পেইজ - Netflix Article View) -->
+    <div id="article-view" style="display: none;">
+        <main class="article-container">
+            <button class="back-btn" id="back-to-home-btn">← Back to Stories</button>
+            <div id="article-detail-content"></div>
+        </main>
+    </div>
+
+    <!-- ৪. লগইন / রেজিস্টার মোডাল -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-box">
+            <button class="modal-close" id="auth-modal-close">&times;</button>
+            <div class="modal-header">
+                <h3 id="modal-title">Sign In</h3>
+                <p id="modal-subtitle">Enter your credentials to publish or comment.</p>
+            </div>
+            
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="auth-username" required>
+                </div>
+                <div class="form-group" id="email-group" style="display: none;">
+                    <label>Email Address</label>
+                    <input type="email" id="auth-email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="auth-password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary full-width" id="auth-submit-btn">Continue</button>
+            </form>
+
+            <div class="modal-footer">
+                <span id="modal-toggle-text">Don't have an account?</span>
+                <button type="button" class="btn-link" id="modal-toggle-btn">Sign up now</button>
+            </div>
+            <div id="auth-error" class="error-banner"></div>
+        </div>
+    </div>
+
+    <!-- ৫. নতুন পোস্ট লেখার মোডাল -->
+    <div class="modal-overlay" id="post-modal">
+        <div class="modal-box modal-large">
+            <button class="modal-close" id="post-modal-close">&times;</button>
+            <div class="modal-header">
+                <h3>Publish Technical Publication</h3>
+                <p>Share architecture, microservices lessons, and algorithms.</p>
+            </div>
+
+            <form id="create-post-form">
+                <div class="form-group">
+                    <label>Article Headline</label>
+                    <input type="text" id="post-title" placeholder="e.g. Single-tenant Titus: VM-level isolation..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Technical Diagram / Cover Image</label>
+                    <div class="custom-file-upload">
+                        <input type="file" id="post-image" accept="image/*">
+                        <span>Click to choose architecture diagram</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Article Deep-Dive (Body)</label>
+                    <textarea id="post-content" rows="9" placeholder="Explain the problem statement, architectural tradeoffs, and conclusion..." required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="post-cancel-btn">Discard</button>
+                    <button type="submit" class="btn btn-primary">Publish Article</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 TechPulse Engineering Network • Netflix TechBlog Architecture</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
