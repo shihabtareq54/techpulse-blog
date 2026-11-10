@@ -83,3 +83,27 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly]
+
+
+# ==============================================================
+# ৩. নির্দিষ্ট পোস্টে কমেন্ট যোগ করা (POST)
+# ==============================================================
+
+class CommentCreateView(generics.CreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get('post_id')
+        post = generics.get_object_or_404(Post, id=post_id)
+        serializer.save(author=self.request.user, post=post)
+
+
+# ==============================================================
+# ৪. নিজের কমেন্ট ডিলিট করা (DELETE)
+# ==============================================================
+
+class CommentDeleteView(generics.DestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsOwnerOrReadOnly, IsAuthenticated]
