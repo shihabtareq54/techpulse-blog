@@ -1,11 +1,13 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import UserRegisterSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
+from .serializers import UserRegisterSerializer, PostSerializer, CommentSerializer
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from .models import Post, Comment
 
 
 class RegisterView(APIView):
@@ -53,3 +55,37 @@ class LogoutView(APIView):
         return Response({
             "message": "Logged out successfully"
         }, status=status.HTTP_200_OK)
+
+
+
+# ==============================================================
+# ১. ব্লগের সব পোস্ট দেখা (GET) এবং নতুন পোস্ট তৈরি করা (POST)
+# ==============================================================
+
+class PostListCreateView(generics.ListCreateAPIView):
+    queryset = Post.objects.all().order_by('-created_at')
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    parser_classes = [MultiPartParser, FormParser] #ছবি ও টেক্সট ডেটা গ্রহণ করার জন্য পার্সার ক্লাস ব্যবহার করা হয়েছে
+
+# নতুন পোস্ট সেভ করার সময় লগইন করা ইউজারকে লেখক বানানোর মেথড:
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+
+# ==============================================================
+# ২. নির্দিষ্ট একটি পোস্টের বিস্তারিত ও কমেন্ট দেখা (GET)
+# ==============================================================
+class PostDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PostSerializer(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
